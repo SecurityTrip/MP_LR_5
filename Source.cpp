@@ -10,6 +10,8 @@ private:
 public:
 	profit()
 	{
+		number = 0;
+		days_count = 0;
 	};
 	profit(int num, int days, std::vector<double> day_profit)
 	{
@@ -29,18 +31,13 @@ public:
 	{
 
 	}
+	
 	// укажем дружественные операторы, которым мы разрешаем доступ
 	// к личным (private) данным
 	friend std::ostream& operator<< (std::ostream&, const profit&);
 	friend std::istream& operator>> (std::istream&, profit& c);
 
-	// перегрузка оператора >>
-	std::istream& operator>> (std::istream& in, profit& c)
-	{
-		in >> c.number;
-		in >> c.days_count;
-		return in;
-	}
+	
 
 	int non_profit(std::vector<double> profit_per_day)
 	{
@@ -55,6 +52,21 @@ public:
 	
 	
 };
+
+// перегрузка оператора >>
+std::istream& operator>> (std::istream& in, profit& p)
+{
+	in >> p.number;
+	in >> p.days_count;
+	return in;
+}
+
+// перегрузка оператора <<
+std::ostream& operator<< (std::ostream& out, const profit& p)
+{
+
+	return out;
+}
 
 int main()
 {
