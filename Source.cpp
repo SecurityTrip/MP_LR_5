@@ -24,20 +24,20 @@ public:
 		profit_per_day = day_profit;
 	}
 
-	profit(const profit& p)// конструктор копирования
+	profit(const profit& p)// РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 	{
 		number = p.number;
 		days_count = p.days_count;
 		profit_per_day = p.profit_per_day;
 	}
-	//деструктор
+	//РґРµСЃС‚СЂСѓРєС‚РѕСЂ
 	~profit()
 	{
 
 	}
 	
-	// укажем дружественные операторы, которым мы разрешаем доступ
-	// к личным (private) данным
+	// СѓРєР°Р¶РµРј РґСЂСѓР¶РµСЃС‚РІРµРЅРЅС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹, РєРѕС‚РѕСЂС‹Рј РјС‹ СЂР°Р·СЂРµС€Р°РµРј РґРѕСЃС‚СѓРї
+	// Рє Р»РёС‡РЅС‹Рј (private) РґР°РЅРЅС‹Рј
 	friend std::ostream& operator<< (std::ostream&, const profit&);
 	friend std::istream& operator>> (std::istream&, profit& c);
 
@@ -57,7 +57,7 @@ public:
 	
 };
 
-// перегрузка оператора >>
+// РїРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° >>
 std::istream& operator>> (std::istream& in, profit& p)
 {
 	in >> p.number;
@@ -65,7 +65,7 @@ std::istream& operator>> (std::istream& in, profit& p)
 	return in;
 }
 
-// перегрузка оператора <<
+// РїРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂР° <<
 std::ostream& operator<< (std::ostream& out, const profit& p)
 {
 	out << "Branch number: " << p.number << std::endl <<"Days count: " << p.days_count << std::endl << "Profit per day: ";
