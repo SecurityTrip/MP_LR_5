@@ -1,8 +1,9 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <string>
 
-class profit
+class profit 
 {
 private:
 	int number, days_count;
@@ -20,13 +21,13 @@ public:
 		profit_per_day = day_profit;
 	};
 
-	profit(const profit& p)				// конструктор копирования
+	profit(const profit& p)// конструктор копирования
 	{
 		number = p.number;
 		days_count = p.days_count;
 		profit_per_day = p.profit_per_day;
 	}
-	// деструктор
+	//деструктор
 	~profit()
 	{
 
@@ -64,11 +65,46 @@ std::istream& operator>> (std::istream& in, profit& p)
 // перегрузка оператора <<
 std::ostream& operator<< (std::ostream& out, const profit& p)
 {
-
+	out << "Branch number: " << p.number << std::endl <<"Days count: " << p.days_count << std::endl << "Profit per day: ";
+	//out <<  p.number << std::endl <<  p.days_count << std::endl;
+	
+	for (int i = 0; i < p.profit_per_day.size(); i++)
+	{
+		out << p.profit_per_day[i];
+	}
+	out << std::endl;
 	return out;
+}
+
+int cheker(int& in, std::string arg)
+{
+	in = 0;
+	while (in != 1 && in != 2)
+	{
+		std::cout << "Chose " << arg << " type(file / consele)>"; std::string in_type_str; std::cin >> in_type_str;
+		if (in_type_str == "file")
+		{
+			in = 1;
+		}
+		if (in_type_str == "console")
+		{
+			in = 2;
+		}
+		if (in == 0)
+		{
+			std::cout << "Wrong type, try again" << std::endl;
+		}
+	}
+	return in;
 }
 
 int main()
 {
+	std::cout << "Information about profit" << std::endl;
+	int in_type = cheker(in_type, "input");
+	int out_type = cheker(out_type, "output");
 
+	std::cout << in_type << std::endl << out_type;
+	
+	
 }
