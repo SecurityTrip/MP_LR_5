@@ -206,14 +206,6 @@ int main()
 	while (repeat)
 	{
 		std::vector<profit> p;
-		/*
-		std::cout << "Enter number of branches>"; int br = 0; br = check_in('i', br, 0);
-		std::vector<profit> p;
-		for (int i = 0; i < br; i++)
-		{
-
-		}
-		*/
 	
 		std::cout << std::endl;
 		int in_type = cheker(in_type, "input");
