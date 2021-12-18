@@ -12,11 +12,6 @@ private:
 	int days_count;
 	std::vector<double> profit_per_day;
 public:
-	profit()
-	{
-		number = "0";
-		days_count = 0;
-	};
 	profit(std::string num, int days, std::vector<double> day_profit)
 	{
 		number = num;
@@ -41,8 +36,6 @@ public:
 	friend std::ostream& operator<< (std::ostream&, const profit&);
 	friend std::istream& operator>> (std::istream&, profit& c);
 
-	
-
 	int non_profit()
 	{
 		int non = 0;
@@ -53,8 +46,6 @@ public:
 		return non;
 	}
 
-	
-	
 };
 
 // перегрузка оператора >>
@@ -62,6 +53,7 @@ std::istream& operator>> (std::istream& in, profit& p)
 {
 	in >> p.number;
 	in >> p.days_count;
+	//in >> p.profit_per_day;
 	return in;
 }
 
