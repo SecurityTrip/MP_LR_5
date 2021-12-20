@@ -36,14 +36,14 @@ public:
 	friend std::ostream& operator<< (std::ostream&, const profit&);
 	friend std::istream& operator>> (std::istream&, profit& c);
 
-	int non_profit()
+	std::string non_profit()
 	{
 		int non = 0;
 		for (int i = 0; i < profit_per_day.size(); i++)
 		{
 			if (profit_per_day[i] == 0 || profit_per_day[i] == 0.0) non++;
 		}
-		return non;
+		return ("Days without profint in branch #" + number + " = " + std::to_string(non));
 	}
 
 };
@@ -252,7 +252,7 @@ int main()
 					}
 				}
 				in_file.close();
-				std::vector<int> res;
+				std::vector<std::string> res;
 				
 				for (int i = 0; i < p.size(); i++)
 				{
@@ -262,7 +262,7 @@ int main()
 				
 				for (int i = 0; i < res.size(); i++)
 				{
-					out_file << res[i] << " ";
+					out_file << res[i] << std::endl;
 				}
 				out_file.close();
 
@@ -306,7 +306,7 @@ int main()
 				}
 				in_file.close();
 
-				std::vector<int> res;
+				std::vector<std::string> res;
 
 				for (int i = 0; i < p.size(); i++)
 				{
@@ -316,7 +316,7 @@ int main()
 
 				for (int i = 0; i < res.size(); i++)
 				{
-					std::cout << res[i] << " ";
+					std::cout << res[i] << std::endl;
 				}
 
 				break;
@@ -355,7 +355,7 @@ int main()
 				}
 				
 
-				std::vector<int> res;
+				std::vector<std::string> res;
 
 				for (int i = 0; i < p.size(); i++)
 				{
@@ -365,7 +365,7 @@ int main()
 
 				for (int i = 0; i < res.size(); i++)
 				{
-					out_file << res[i] << " ";
+					out_file << res[i] << std::endl;
 				}
 				out_file.close();
 
@@ -391,7 +391,7 @@ int main()
 					p.push_back(prof);
 				}
 
-				std::vector<int> res;
+				std::vector<std::string> res;
 
 				for (int i = 0; i < p.size(); i++)
 				{
@@ -401,7 +401,7 @@ int main()
 
 				for (int i = 0; i < res.size(); i++)
 				{
-					std::cout << res[i] << " ";
+					std::cout << res[i] << std::endl;
 				}
 				
 				break;
