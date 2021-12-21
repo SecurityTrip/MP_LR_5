@@ -53,7 +53,12 @@ std::istream& operator>> (std::istream& in, profit& p)
 {
 	in >> p.number;
 	in >> p.days_count;
-	//in >> p.profit_per_day;
+
+	/*for (int i = 0; i < p.days_count; i++)
+	{
+		p.profit_per_day.push_back(in);
+	}*/
+
 	return in;
 }
 
@@ -131,37 +136,30 @@ void parce(std::string in, std::string& n ,int& d, std::vector<double>& v,bool& 
 	{
 		if (result.size() - 2 == stoi(result[1]))
 		{
-			try
-			{
-				n = result[0];
-				d = stoi(result[1]);
-
-				for (int i = 2; i < result.size(); i++)
-				{
-					for (int j = 0; j < result[i].size(); j++)
-					{
-						if (result[i][j] < 48 || result[i][j]>57)
-						{
-							if (result[i][j] != 46)
-							{
-								std::cout << "Error in input file";
-								s = false;
-								v.clear();
-								break;
-							}
-
-						}
-					}
-					v.push_back(atof(result[i].c_str()));
-				}
-			}
 			
+			n = result[0];
+			d = stoi(result[1]);
 
-			catch (...)
+			for (int i = 2; i < result.size(); i++)
 			{
-				s = false;
-				std::cout << "Error in input file";
+				for (int j = 0; j < result[i].size(); j++)
+				{
+					if (result[i][j] < 48 || result[i][j]>57)
+					{
+						if (result[i][j] != 46)
+						{
+							std::cout << "Error in input file";
+							s = false;
+							v.clear();
+							break;
+						}
+
+					}
+				}
+				v.push_back(atof(result[i].c_str()));
 			}
+
+			
 		}
 		else { std::cout << "Error in input file"; s = false; }
 	}
@@ -236,41 +234,49 @@ void file_input(std::vector<profit>& p, bool& s)
 	int br;
 	std::string bra;
 	getline(in_file, bra);
-	br = stoi(bra);
-	if (br == file_len(in_name))
+	try
 	{
-		for (int i = 0; i < br; i++)
+		br = stoi(bra);
+		if (br == file_len(in_name))
 		{
-			try
+			for (int i = 0; i < br; i++)
 			{
-				std::string file_data;
-				getline(in_file, file_data);
-				std::string name;
-				int days;
-				std::vector<double> vec;
-				parce(file_data, name, days, vec, s);
-				if (s)
+				try
 				{
-					profit prof(name, days, vec);
+					std::string file_data;
+					getline(in_file, file_data);
+					std::string name;
+					int days;
+					std::vector<double> vec;
+					parce(file_data, name, days, vec, s);
+					if (s)
+					{
+						profit prof(name, days, vec);
 
-					p.push_back(prof);
+						p.push_back(prof);
 
 
+					}
+					else
+					{
+						break;
+					}
 				}
-				else
+				catch (...)
 				{
+					s = false;
+					std::cout << "Error in input file";
 					break;
 				}
 			}
-			catch (...)
-			{
-				s = false;
-				std::cout << "Error in input file";
-				break;
-			}
+		}
+		else
+		{
+			s = false;
+			std::cout << "Error in input file";
 		}
 	}
-	else
+	catch (...) 
 	{
 		s = false;
 		std::cout << "Error in input file";
