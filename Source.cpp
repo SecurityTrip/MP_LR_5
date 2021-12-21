@@ -270,6 +270,11 @@ void file_input(std::vector<profit>& p, bool& s)
 			}
 		}
 	}
+	else
+	{
+		s = false;
+		std::cout << "Error in input file";
+	}
 	in_file.close();
 }
 
