@@ -18,7 +18,7 @@ public:
 		days_count = days;
 		profit_per_day = day_profit;
 	}
-
+	
 	profit(const profit& p)// конструктор копирования
 	{
 		number = p.number;
@@ -100,7 +100,7 @@ int cheker(int& in, std::string arg)
 	in = 0;
 	while (in != 1 && in != 2)
 	{
-		std::cout << "Choose " << arg << " type(file / consele)>"; std::string in_type_str; std::cin >> in_type_str;
+		std::cout << "Choose " << arg << " type(file / console)>"; std::string in_type_str; std::cin >> in_type_str;
 		if (in_type_str == "file")
 		{
 			in = 1;
@@ -127,40 +127,64 @@ void parce(std::string in, std::string& n ,int& d, std::vector<double>& v,bool& 
 		input >> substring;
 		result.push_back(substring);
 	}
-	if (result.size() > 3)
+	try
 	{
-		try 
+		if (result.size() - 2 == stoi(result[1]))
 		{
-			n = result[0];
-			d = stoi(result[1]);
-
-			for (int i = 2; i < result.size(); i++)
+			try
 			{
-				for (int j = 0; j < result[i].size(); j++)
+				n = result[0];
+				d = stoi(result[1]);
+
+				for (int i = 2; i < result.size(); i++)
 				{
-					if (result[i][j] < 48 || result[i][j]>57)
+					for (int j = 0; j < result[i].size(); j++)
 					{
-						if(result[i][j] != 46)
+						if (result[i][j] < 48 || result[i][j]>57)
 						{
-							std::cout << "Error in input file";
-							s = false;
-							v.clear();
-							break;
+							if (result[i][j] != 46)
+							{
+								std::cout << "Error in input file";
+								s = false;
+								v.clear();
+								break;
+							}
+
 						}
-						
 					}
+					v.push_back(atof(result[i].c_str()));
 				}
-				v.push_back(atof(result[i].c_str()));
+			}
+			
+
+			catch (...)
+			{
+				s = false;
+				std::cout << "Error in input file";
 			}
 		}
-		catch(...)
-		{
-			s = false;
-			std::cout << "Error in input file";
-		}
-		
+		else { std::cout << "Error in input file"; s = false; }
 	}
-	else { std::cout << "Error in input file"; s = false; }
+	catch (...)
+	{
+		s = false;
+		std::cout << "Error in input file";
+	}
+	
+}
+
+int file_len(std::string in_s)
+{
+	std::string str;
+	std::ifstream in;
+	in.open(in_s);
+	int i = 0;
+	while (getline(in, str))
+	{
+		i++;
+	}
+	in.close();
+	return (i-1);
 }
 
 double check_in(char f, int n, double d)
@@ -191,6 +215,136 @@ double check_in(char f, int n, double d)
 	}
 }
 
+void file_input(std::vector<profit>& p, bool& s)
+{
+	std::ifstream in_file;
+	
+	std::string in_name;
+
+	std::cout << "Enter input file name>"; std::cin >> in_name;
+	in_file.open(in_name);
+	while (!in_file.is_open())
+	{
+		std::cout << "Can`t open input file. Try again." << std::endl;
+		std::cout << "Enter input file name>"; std::cin >> in_name;
+		in_file.open(in_name);
+
+	}
+	std::cin.clear();
+	std::cin.ignore(10000, '\n');
+
+	int br;
+	std::string bra;
+	getline(in_file, bra);
+	br = stoi(bra);
+	if (br == file_len(in_name))
+	{
+		for (int i = 0; i < br; i++)
+		{
+			try
+			{
+				std::string file_data;
+				getline(in_file, file_data);
+				std::string name;
+				int days;
+				std::vector<double> vec;
+				parce(file_data, name, days, vec, s);
+				if (s)
+				{
+					profit prof(name, days, vec);
+
+					p.push_back(prof);
+
+
+				}
+				else
+				{
+					break;
+				}
+			}
+			catch (...)
+			{
+				s = false;
+				std::cout << "Error in input file";
+				break;
+			}
+		}
+	}
+	in_file.close();
+}
+
+void console_input(std::vector<profit>& p)
+{
+	std::cout << "Enter number of branches>"; int br = 0; br = check_in('i', br, 0);
+
+	
+	for (int i = 0; i < br; i++)
+	{
+		std::cout << "Enter branch number> "; std::string branch; std::cin >> branch;
+		double a = 0.0;
+		std::cout << "Enter days count > "; int days = 0; days = (int)check_in('i', days, a);
+		std::vector<double> vec;
+		int b = 0;
+		for (int i = 0; i < days; i++)
+		{
+			std::cout << "Enter profit in " << i + 1 << " day>"; double p = 0;  p = check_in('d', b, p);
+			vec.push_back(p);
+		}
+
+		profit prof(branch, days, vec);
+		p.push_back(prof);
+	}
+}
+
+void file_output(std::vector<profit>& p, bool s)
+{
+	std::string out_name;
+	std::ofstream out_file;
+	std::cout << "Enter output file name>"; std::cin >> out_name;
+	out_file.open(out_name);
+
+	if (s)
+	{
+		std::vector<std::string> res;
+
+		for (int i = 0; i < p.size(); i++)
+		{
+			res.push_back(p[i].non_profit());
+			out_file << p[i];
+		}
+
+		out_file << std::endl;
+
+		for (int i = 0; i < res.size(); i++)
+		{
+			out_file << res[i] << std::endl;
+		}
+	}
+
+	out_file.close();
+}
+
+void console_output(std::vector<profit>& p, bool s)
+{
+	if (s)
+	{
+		std::vector<std::string> res;
+
+		for (int i = 0; i < p.size(); i++)
+		{
+			res.push_back(p[i].non_profit());
+			std::cout << p[i];
+		}
+
+		std::cout << std::endl;
+
+		for (int i = 0; i < res.size(); i++)
+		{
+			std::cout << res[i] << std::endl;
+		}
+	}
+}
+
 int main()
 {
 	std::cout << "Information about profit" << std::endl;
@@ -211,113 +365,19 @@ int main()
 			{
 			case 1:
 			{
-				std::ifstream in_file;
-				std::ofstream out_file;
-				std::string in_name, out_name;
+				bool s = true;
+				file_input(p,s);
 
-			repeat_in_1_1:
-				std::cout << "Enter input file name>"; std::cin >> in_name;
-				in_file.open(in_name);
-				if (!in_file.is_open()) { std::cout << "Can`t open input file." << std::endl; goto repeat_in_1_1; }
-				std::cin.clear();
-				std::cin.ignore(10000, '\n');
-
-				std::cout << "Enter output file name>"; std::cin >> out_name;
-				out_file.open(out_name);
-
-				int br;
-				std::string bra;
-				getline(in_file, bra);
-				br = stoi(bra);
-				for (int i = 0; i < br; i++)
-				{
-					std::string file_data;
-					getline(in_file, file_data);
-					std::string name;
-					int days;
-					std::vector<double> vec;
-					bool s = true;
-					parce(file_data, name, days, vec, s);
-					if (s)
-					{
-						profit prof(name, days, vec);
-
-						p.push_back(prof);
-						
-
-					}
-					else
-					{
-						break;
-					}
-				}
-				in_file.close();
-				std::vector<std::string> res;
-				
-				for (int i = 0; i < p.size(); i++)
-				{
-					res.push_back(p[i].non_profit());
-					out_file << p[i];
-				}
-				
-				for (int i = 0; i < res.size(); i++)
-				{
-					out_file << res[i] << std::endl;
-				}
-				out_file.close();
+				file_output(p, s);
 
 				break;
 			}
 			case 2:
 			{
-				std::ifstream in_file;
-				std::string in_name;
+				bool s = true;
+				file_input(p, s);
 
-			repeat_in_1_2:
-				std::cout << "Enter input file name>"; std::cin >> in_name;
-				in_file.open(in_name);
-				if (!in_file.is_open()) { std::cout << "Can`t open input file." << std::endl; goto repeat_in_1_2; }
-
-				int br;
-				std::string bra;
-				getline(in_file, bra);
-				br = stoi(bra);
-				for (int i = 0; i < br; i++)
-				{
-					std::string file_data;
-					getline(in_file, file_data);
-					std::string name;
-					int days;
-					std::vector<double> vec;
-					bool s = true;
-					parce(file_data, name, days, vec, s);
-					if (s)
-					{
-						profit prof(name, days, vec);
-
-						p.push_back(prof);
-
-
-					}
-					else
-					{
-						break;
-					}
-				}
-				in_file.close();
-
-				std::vector<std::string> res;
-
-				for (int i = 0; i < p.size(); i++)
-				{
-					res.push_back(p[i].non_profit());
-					std::cout << p[i];
-				}
-
-				for (int i = 0; i < res.size(); i++)
-				{
-					std::cout << res[i] << std::endl;
-				}
+				console_output(p, s);
 
 				break;
 			}
@@ -331,78 +391,17 @@ int main()
 			{
 			case 1:
 			{
-				std::cout << "Enter number of branches>"; int br = 0; br = check_in('i', br, 0);
+				console_input(p);
 
-				std::ofstream out_file;
-				std::string out_name;
-				std::cout << "Enter output file name>"; std::cin >> out_name;
-				out_file.open(out_name);
-				for (int i = 0; i < br; i++)
-				{
-					std::cout << "Enter branch number> "; std::string branch; std::cin >> branch;
-					double a = 0.0;
-					std::cout << "Enter days count > "; int days = 0; days = (int)check_in('i', days, a);
-					std::vector<double> vec;
-					int b = 0;
-					for (int i = 0; i < days; i++)
-					{
-						std::cout << "Enter profit in " << i + 1 << " day>"; double p = 0;  p = check_in('d', b, p);
-						vec.push_back(p);
-					}
-
-					profit prof(branch, days, vec);
-					p.push_back(prof);
-				}
-				
-
-				std::vector<std::string> res;
-
-				for (int i = 0; i < p.size(); i++)
-				{
-					res.push_back(p[i].non_profit());
-					out_file << p[i];
-				}
-
-				for (int i = 0; i < res.size(); i++)
-				{
-					out_file << res[i] << std::endl;
-				}
-				out_file.close();
+				file_output(p, true);
 
 				break;
 			}
 			case 2:
 			{
-				std::cout << "Enter number of branches>"; int br = 0; br = check_in('i', br, 0);
-				for (int i = 0; i < br; i++)
-				{
-					std::cout << "Enter branch number> "; std::string branch; std::cin >> branch;
-					double a = 0.0;
-					std::cout << "Enter days count > "; int days = 0; days = (int)check_in('i', days, a);
-					std::vector<double> vec;
-					int b = 0;
-					for (int i = 0; i < days; i++)
-					{
-						std::cout << "Enter profit in " << i + 1 << " day>"; double p = 0;  p = check_in('d', b, p);
-						vec.push_back(p);
-					}
+				console_input(p);
 
-					profit prof(branch, days, vec);
-					p.push_back(prof);
-				}
-
-				std::vector<std::string> res;
-
-				for (int i = 0; i < p.size(); i++)
-				{
-					res.push_back(p[i].non_profit());
-					std::cout << p[i];
-				}
-
-				for (int i = 0; i < res.size(); i++)
-				{
-					std::cout << res[i] << std::endl;
-				}
+				console_output(p, true);
 				
 				break;
 			}

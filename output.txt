@@ -1,4 +1,5 @@
-Branch number: 1 Days count: 2 Profit per day: 1 3 
-Branch number: 0 Days count: 0 Profit per day: 
-Branch number: 9 Days count: 5 Profit per day: 0 99.9 999.999 0 0 
-0 0 3 
+Branch number: 1 Days count: 5 Profit per day: 100 78.5 100 0 1000 
+Branch number: 2 Days count: 4 Profit per day: 100 0 0 1333 
+
+Days without profint in branch #1 = 1
+Days without profint in branch #2 = 2
